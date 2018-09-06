@@ -6,7 +6,7 @@ const VideoList = props => {
 		return <VideoListItem key={video.etag} video={video} />;
 	});
 
-	return <ul>{videoItems}</ul>;
+	return <ul className="col-md-4 list-group">{videoItems}</ul>;
 };
 
 export default VideoList;
