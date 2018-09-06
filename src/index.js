@@ -13,34 +13,37 @@ const API_KEY = "AIzaSyCq0zxXoVnlu9k5QtwKQvK0kIZifhwKeL8";
 class App extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = { 
+		this.videoSearch("surfboards");
+		this.state = {
 			videos: [],
 			selectedVideo: null
 		};
 	}
 
-		YTSearch({ key: API_KEY, term: "surfboards" }, videos => {
-			// ES6 syntax for this.setState({ videos: videos});
-			this.setState({ videos:
+	videoSearch(term) {
+		YTSearch({ key: API_KEY, term: term }, videos => {
+			this.setState({
 				videos: videos,
 				selectedVideo: videos[0]
 			});
 		});
 	}
 	render() {
+		const videoSearch = _.debounce(term => {
+			this.videoSearch(term);
+		}, 500);
 		return (
 			<div>
 				<SearchBar />
 				<div classname="row">
 					<VideoDetail video={this.state.selectedVideo} />
 					<VideoList
-                        // callback function
-                        onVideoSelect={selectedVideo =>
-                            this.setState({ selectedVideo })
-                        }
-                        videos={this.state.videos}
-                    />
+						// callback function
+						onVideoSelect={selectedVideo =>
+							this.setState({ selectedVideo })
+						}
+						videos={this.state.videos}
+					/>
 				</div>
 			</div>
 		);
